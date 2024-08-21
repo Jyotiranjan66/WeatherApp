@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="weatherRes"
+            type="com.example.weathernow.data.model.response.WeatherResponse" />
+        <variable
+            name="showProgress"
+            type="androidx.databinding.ObservableField&lt;Boolean&gt;" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/weather_bg"
+        tools:context=".main.homemodule.ui.MainActivity">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/cityName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="34sp"
+            android:layout_marginTop="32dp"
+            android:text="@{weatherRes.name}"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/sf_pro_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="New York" />
+
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="72sp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/sf_pro_thin"
+            android:text="@{weatherRes.kelvinToCelsius(weatherRes.main.temp)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cityName"
+            tools:text="23°C" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@{weatherRes.getDayAndMonthFromTimezone()}"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/sf_pro_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/temperature"
+            tools:text="Wednesday, 21 August 2024" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/dateTime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_shape"
+                    android:padding="20dp"
+                    android:visibility="@{weatherRes.wind != null ? View.VISIBLE:View.GONE}"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        app:lottie_rawRes="@raw/wind_anim"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/wind_speed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:layout_marginTop="10dp"
+                        android:text='@{String.valueOf(weatherRes.wind.speed) + "m/s"}'
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/sf_pro_regular"
+                        tools:text="Wind Speed" />
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_shape"
+                android:padding="20dp"
+                android:visibility="@{weatherRes.clouds != null ? View.VISIBLE:View.GONE}"
+                android:gravity="center_horizontal"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:lottie_rawRes="@raw/cloud_anim"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/cloud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:text='@{String.valueOf(weatherRes.clouds.all) + "%"}'
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/sf_pro_regular"
+                    tools:text="Wind Speed" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_shape"
+                android:padding="20dp"
+                android:visibility="@{weatherRes.rain != null ? View.VISIBLE:View.GONE}"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:lottie_rawRes="@raw/rain_anim"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/rain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:layout_marginTop="10dp"
+                    android:text='@{String.valueOf(weatherRes.rain.oneHour) + " mm in 1h"}'
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/sf_pro_regular"
+                    tools:text="Wind Speed" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/temp_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#E62F2D68"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/feels_like"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/sf_pro_regular"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/feelsLike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{weatherRes.kelvinToCelsius(weatherRes.main.feelsLike)}"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/sf_pro_regular"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="25°C" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/humidity"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/sf_pro_regular"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/humidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{String.valueOf(weatherRes.main.humidity) + "%"}'
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/sf_pro_regular"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="25°C" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/temp_min"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/sf_pro_regular"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tempMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{weatherRes.kelvinToCelsius(weatherRes.main.tempMin)}"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/sf_pro_regular"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="25°C" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/temp_max"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/sf_pro_regular"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tempMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{weatherRes.kelvinToCelsius(weatherRes.main.tempMax)}"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/sf_pro_regular"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="25°C" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            app:lottie_rawRes="@raw/progress_animation"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:visibility="@{showProgress.booleanValue() ? View.VISIBLE:View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

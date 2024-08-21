@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">WeatherNow</string>
+    <string name="feels_like">Feels like</string>
+    <string name="humidity">Humidity</string>
+    <string name="temp_min">Temp Min</string>
+    <string name="temp_max">Temp Max</string>
+    <string name="grant">Grant</string>
+    <string name="deny">Deny</string>
+    <string name="cancel">Cancel</string>
+    <string name="open_setting">Open Settings</string>
+    <string name="location_required">Location Permission Required</string>
+    <string name="permission_dialog">This app needs access to your location to show Weather Details. Please grant the permission.</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="open_settings">Location permission is required for get current Weather. Would you like to open settings to grant the permission?</string>
+</resources>
